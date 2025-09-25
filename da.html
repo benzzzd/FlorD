@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Flor</title>
+  <style>
+    body{
+      margin:0;
+      font-family:Inter, system-ui, Arial;
+      background:#081226;
+      color:#e6eef8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh
+    }
+    .wrap{
+      max-width:920px;
+      padding:20px;
+      text-align:center
+    }
+    h1{margin:0 0 12px}
+    p{color:#9fb0c6;margin:0 0 18px}
+    .videocard{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.14));
+      padding:16px;
+      border-radius:16px;
+      box-shadow:0 8px 30px rgba(2,6,23,0.6);
+      margin:0 auto 20px;
+      width:480px;           
+      max-width:90%;         
+    }
+    video{
+      width:100%;            
+      height:auto;
+      border-radius:12px;
+      display:block;
+    }
+    a.btn{
+      display:inline-block;
+      margin-top:14px;
+      padding:10px 14px;
+      border-radius:10px;
+      background:#7c3aed;
+      color:#fff;
+      text-decoration:none
+    }
+    .warning{
+      color:#ffd6a5;
+      margin-top:14px;
+      font-size:13px
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>:p </h1>
+    <p></p>
+
+    <div class="videocard">
+      <video autoplay loop muted playsinline>
+        <source src="Ventilador.mp4" type="video/mp4">
+        Tu navegador no soporta video.
+      </video>
+    </div>
+
+    <a class="btn" href="index.html">Volver</a>
+
+    <p class="warning" id="checkMsg" aria-live="polite"></p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const user = params.get("user");
+    const checkMsg = document.getElementById("checkMsg");
+
+    if(!user){
+      checkMsg.textContent = "";
+    } else {
+      checkMsg.textContent = "Usuario: " + user;
+    }
+  </script>
+</body>
+</html>

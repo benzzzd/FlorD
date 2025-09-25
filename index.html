@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — </title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #0b1220;
+      --accent: #7c3aed;
+      --muted: #94a3b8;
+      --white: #e6eef8;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:Inter, system-ui, Arial;
+      background:linear-gradient(135deg,#021028 0%, #04263f 100%);
+      color:var(--white);
+    }
+    .card{
+      width:340px;
+      padding:28px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+    h1{margin:0 0 8px;font-size:20px}
+    p.subtitle{margin:0 0 18px;color:var(--muted);font-size:13px}
+    label{display:block;font-size:13px;margin-bottom:6px}
+    input[type="text"], input[type="password"]{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.06);
+      background:transparent;
+      color:var(--white);
+      margin-bottom:12px;
+      outline:none;
+    }
+    .actions{display:flex;gap:8px;align-items:center;justify-content:space-between}
+    button{
+      background:var(--accent);
+      border:none;
+      padding:10px 14px;
+      color:white;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .hint{font-size:12px;color:var(--muted)}
+    .error{color:#ffb4b4;background:rgba(255,180,180,0.06);padding:8px;border-radius:8px;margin-top:10px;font-size:13px;display:none}
+    small.note{display:block;margin-top:12px;color:var(--muted);font-size:12px}
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="title">
+    <h1 id="title">Acceso</h1>
+    <p class="subtitle">Introduce tu nombre y contraseña para entrar .</p>
+
+    <form id="loginForm" autocomplete="off">
+      <label for="name">Nombre</label>
+      <input id="name" name="name" type="text" required placeholder="ej. Benja" />
+
+      <label for="password">Contraseña</label>
+      <input id="password" name="password" type="password" required placeholder="••••••••" />
+
+      <div class="actions">
+        <button type="submit">Entrar</button>
+        <div class="hint">Sólo un usuario válido.</div>
+      </div>
+
+      <div id="error" class="error" role="status" aria-live="polite"></div>
+
+      <small class="note">Consejo: Pide tus datos para ingresar.</small>
+    </form>
+  </main>
+
+  <script>
+   
+    
+    const ALLOWED_NAME = "apdd6d";
+    const ALLOWED_PASS = "12345";
+
+    const form = document.getElementById("loginForm");
+    const errBox = document.getElementById("error");
+
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      errBox.style.display = "none";
+      const name = document.getElementById("name").value.trim();
+      const pass = document.getElementById("password").value;
+
+      
+      if(name === ALLOWED_NAME && pass === ALLOWED_PASS){
+        
+        window.location.href = "da.html?user=" + encodeURIComponent(name);
+      } else {
+        errBox.textContent = "Nombre o contraseña incorrectos.";
+        errBox.style.display = "block";
+      }
+    });
+
+    
+  </script>
+</body>
+</html>
