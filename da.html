@@ -28,11 +28,11 @@
       border-radius:16px;
       box-shadow:0 8px 30px rgba(2,6,23,0.6);
       margin:0 auto 20px;
-      width:480px;           
-      max-width:90%;         
+      width:480px;
+      max-width:90%;
     }
     video{
-      width:100%;            
+      width:100%;
       height:auto;
       border-radius:12px;
       display:block;
@@ -71,6 +71,11 @@
   </div>
 
   <script>
+    // comprobar si hay sesión
+    if(sessionStorage.getItem("logueado") !== "true"){
+      window.location.href = "index.html";
+    }
+
     const params = new URLSearchParams(location.search);
     const user = params.get("user");
     const checkMsg = document.getElementById("checkMsg");
