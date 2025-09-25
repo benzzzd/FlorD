@@ -61,7 +61,7 @@
 <body>
   <main class="card" role="main" aria-labelledby="title">
     <h1 id="title">Acceso</h1>
-    <p class="subtitle">Introduce tu nombre y contraseña para entrar .</p>
+    <p class="subtitle">Introduce tu nombre y contraseña para entrar.</p>
 
     <form id="loginForm" autocomplete="off">
       <label for="name">Nombre</label>
@@ -82,8 +82,6 @@
   </main>
 
   <script>
-   
-    
     const ALLOWED_NAME = "apdd6d";
     const ALLOWED_PASS = "12345";
 
@@ -96,17 +94,14 @@
       const name = document.getElementById("name").value.trim();
       const pass = document.getElementById("password").value;
 
-      
       if(name === ALLOWED_NAME && pass === ALLOWED_PASS){
-        
+        sessionStorage.setItem("logueado", "true"); // guardar sesión
         window.location.href = "da.html?user=" + encodeURIComponent(name);
       } else {
         errBox.textContent = "Nombre o contraseña incorrectos.";
         errBox.style.display = "block";
       }
     });
-
-    
   </script>
 </body>
 </html>
