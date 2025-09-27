@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Campo de Flores</title>
+<style>
+  body, html { 
+    margin:0; padding:0; overflow:hidden;
+    background:#87CEEB; 
+    font-family:Inter, system-ui, Arial;
+    color:#e6eef8;
+  }
+  canvas { display:block; }
+
+  
+  header {
+    position:absolute; top:15px; left:15px; z-index:10;
+  }
+  .menu { position:relative; display:inline-block; }
+  .menu button {
+    background:#7c3aed; color:#fff;
+    padding:10px 14px; border:none;
+    border-radius:10px; cursor:pointer;
+    font-size:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    transition:transform 0.2s;
+  }
+  .menu button:hover { transform:scale(1.05); }
+  .menu-content {
+    display:none; position:absolute;
+    background:#1e293b; min-width:160px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    border-radius:10px; z-index:20;
+    flex-direction:column;
+  }
+  .menu-content a {
+    color:#e6eef8; padding:12px 16px;
+    text-decoration:none; display:block;
+    border-radius:10px; transition:background 0.2s;
+  }
+  .menu-content a:hover { background:#334155; }
+  .menu.open .menu-content { display:flex; }
+</style>
+</head>
+<body>
+<header>
+  <div class="menu" id="menu">
+    <button onclick="toggleMenu()">☰ Menú</button>
+    <div class="menu-content">
+      <a href="da.html">Flor 3D</a>
+      <a href="davideo.html">Video</a>
+      <a href="index.html" onclick="logout()">Cerrar sesión</a>
+    </div>
+  </div>
+</header>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+const user = sessionStorage.getItem("user");
+if(!user){
+  const destino = encodeURIComponent(window.location.pathname);
+  window.location.href = "index.html?redirect=" + destino;
+}
+
+
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("open");
+}
+function logout(){
+  sessionStorage.removeItem("user");
+}
+
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', ()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
+
+const flowers=[];
+for(let i=0;i<150;i++){
+  flowers.push({
+    x:Math.random()*canvas.width,
+    y:canvas.height+Math.random()*100,
+    targetY:canvas.height-100-Math.random()*50,
+    speed:0.5+Math.random()*1.5,
+    size:5+Math.random()*5,
+    color:`hsl(${50+Math.random()*20},80%,60%)`
+  });
+}
+
+function drawBackground(){
+  ctx.beginPath();
+  ctx.moveTo(0,canvas.height*0.7);
+  ctx.quadraticCurveTo(canvas.width*0.25,canvas.height*0.55,canvas.width*0.5,canvas.height*0.7);
+  ctx.quadraticCurveTo(canvas.width*0.75,canvas.height*0.85,canvas.width,canvas.height*0.7);
+  ctx.lineTo(canvas.width,canvas.height); ctx.lineTo(0,canvas.height);
+  ctx.fillStyle='hsl(120,40%,70%)'; ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(0,canvas.height*0.8);
+  ctx.quadraticCurveTo(canvas.width*0.25,canvas.height*0.65,canvas.width*0.5,canvas.height*0.8);
+  ctx.quadraticCurveTo(canvas.width*0.75,canvas.height*0.95,canvas.width,canvas.height*0.8);
+  ctx.lineTo(canvas.width,canvas.height); ctx.lineTo(0,canvas.height);
+  ctx.fillStyle='hsl(120,50%,60%)'; ctx.fill();
+}
+
+function drawGrass(){
+  for(let i=0;i<canvas.width;i+=3){
+    const bladeHeight=5+Math.random()*10;
+    ctx.beginPath();
+    ctx.moveTo(i,canvas.height);
+    ctx.lineTo(i,canvas.height-bladeHeight);
+    ctx.strokeStyle='green'; ctx.lineWidth=1; ctx.stroke();
+  }
+}
+
+function drawFlower(x,y,size,color){
+  ctx.save();
+  ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,canvas.height);
+  ctx.strokeStyle='green'; ctx.lineWidth=size/3; ctx.stroke();
+  ctx.fillStyle='green';
+  ctx.beginPath(); ctx.ellipse(x-size,y+size*2,size,size/2,-Math.PI/4,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x+size,y+size*2,size,size/2,Math.PI/4,0,Math.PI*2); ctx.fill();
+  ctx.translate(x,y);
+  for(let i=0;i<5;i++){
+    ctx.rotate((Math.PI*2)/5);
+    ctx.beginPath(); ctx.ellipse(0,size,size*0.6,size*1.2,0,0,Math.PI*2);
+    ctx.fillStyle=color; ctx.fill();
+  }
+  ctx.beginPath(); ctx.arc(0,0,size*0.6,0,Math.PI*2);
+  ctx.fillStyle='orange'; ctx.fill();
+  ctx.restore();
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawBackground();
+  for(const f of flowers){
+    f.y -= f.speed; 
+    if(f.y<f.targetY) f.y=f.targetY; 
+    drawFlower(f.x,f.y,f.size,f.color);
+  }
+  drawGrass();
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>
